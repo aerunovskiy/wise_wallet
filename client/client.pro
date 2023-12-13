@@ -1,4 +1,4 @@
-QT       += core gui network
+QT       += core gui network qml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,15 +10,10 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp \
-    tcp_client.cpp
+    main_backend.cpp
 
 HEADERS += \
-    mainwindow.h \
-    tcp_client.h
-
-FORMS += \
-    mainwindow.ui
+    main_backend.h
 
 TRANSLATIONS += \
     client_ru_RU.ts
@@ -29,3 +24,9 @@ CONFIG += embed_translations
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    main.qml
+
+RESOURCES += \
+    resources.qrc

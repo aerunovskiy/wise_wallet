@@ -1,23 +1,25 @@
 #include "mainwindow.h"
 
-#include <QApplication>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QLocale>
 #include <QTranslator>
 
+#include "main_backend.h"
+
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QGuiApplication app(argc, argv);
 
-    QTranslator translator;
-    const QStringList uiLanguages = QLocale::system().uiLanguages();
-    for (const QString &locale : uiLanguages) {
-        const QString baseName = "client_" + QLocale(locale).name();
-        if (translator.load(":/i18n/" + baseName)) {
-            a.installTranslator(&translator);
-            break;
-        }
-    }
-    MainWindow w;
-    w.show();
-    return a.exec();
+    MainBackend mainBackend;
+
+    QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("MainBackend", &mainBackend);
+    engine.load(QUrl(QStringLiteral("qrc:main.qml")));
+
+    if (engine.rootObjects().isEmpty())
+        return EXIT_FAILURE;
+
+    return app.exec();
 }
